@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Swift Agent</title>
+</head>
+
+<script src="{{url_for('static', filename='jquery-3.2.1.js')}}"></script>
+
+<body>
+    <h1 align = 'center'>Swift Agent</h1>
+    {% if responses %}
+    {% if responses.end%}
+    <table align='center'>
+        <tr>
+            <td align='center' style=''><h4>{{responses.title}}</h4>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <a class="btn" href="/agent"><button type="button">OK</button></a>
+            </td>
+        </tr>
+    </table>
+    {%else%}
+    <!-- Shows any response when dailing USSDs -->
+    <table align='center'>
+        <tr>
+            <td align='center' style=''><h4>{{responses.title}}</h4>
+            </td>
+        </tr>
+        {%for item in responses['items']%}
+        <tr>
+            <td align='left'>{{ loop.index }}.{{item}}</td>
+        </tr>
+        {%endfor%}
+        <tr>
+            <form method='POST' action='/agent' align='center'>
+                <td>
+                    <br>
+                    <input type='text' , id='req_text' name='req_text'>
+                    <input type='submit' value='enter'>
+                    </br>
+                </td>
+            </form>
+        </tr>
+    </table>
+    {%endif%}
+    {% elif message %}
+    <!-- Showed if there is a message -->
+    <span name = 'message'>{{message}}</span>
+    {%else%}
+    <form method='POST' action='{{form_name}}' align='center'>
+        <input type='text' , id='req_text' name='req_text'>
+        <input type='submit' value='dail'>
+    </form>
+    {%endif%}
+    <div id='messages'></div>
+</body>
+<script>
+setInterval(function() {
+    // load the data from your endpoint into the div
+    $("#messages").load("/messages")
+}, 5000)
+</script>
+
+</html>
